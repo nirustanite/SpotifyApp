@@ -1,8 +1,12 @@
 import React from 'react';
 import { Menu, Container, Icon } from 'semantic-ui-react';
-import { useRouteMatch, Link } from "react-router-dom";
+import { useRouteMatch, Link, } from "react-router-dom";
+import { useHistory } from 'react-router';
 import routes from '../../pages/routes';
 import styled from 'styled-components';
+import { IRootState } from '../../interfaces/redux/stateInterface';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthTokenStore from '../../redux/AuthToken';
 
 const StyledMenu = styled(Menu)`
     border: none !important;
@@ -23,6 +27,12 @@ const StyledMenu = styled(Menu)`
 
 const Nav = () => {
 
+    const dispatch = useDispatch();
+
+    const history = useHistory();
+
+    const token = useSelector((state: IRootState) => state.authToken.token);
+
     const matchHome = useRouteMatch({
         path: "/",
         exact: true
@@ -31,6 +41,12 @@ const Nav = () => {
     const matchLogin = useRouteMatch({
         path: "/login",
     })
+
+    const handleLogout = () => {
+        dispatch(AuthTokenStore.actions.setToken(""));
+        window.localStorage.removeItem("token");
+        history.push(routes.LOGIN)
+    }
 
     return (
         <StyledMenu fixed="top" stackable>
@@ -48,15 +64,22 @@ const Nav = () => {
                     Home
                 </Menu.Item>
                 <Menu.Menu position='right'>
-                    <Menu.Item
-                        as={Link}
-                        name="LOGIN"
-                        to={routes.LOGIN}
-                        active={!!matchLogin}
-                    >
-                        <Icon name='user outline' />
-                        Login
-                    </Menu.Item>
+                    {token ? (
+                        <Menu.Item onClick={handleLogout}>
+                            Logout
+                        </Menu.Item>
+                    ) : (
+                        <Menu.Item
+                            as={Link}
+                            name="LOGIN"
+                            to={routes.LOGIN}
+                            active={!!matchLogin}
+                        >
+                            <Icon name='user outline' />
+                            Login
+                        </Menu.Item>
+                    )}
+
                 </Menu.Menu>
             </Container>
         </StyledMenu>

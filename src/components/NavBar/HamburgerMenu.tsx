@@ -2,8 +2,11 @@ import React, { ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
 import { Sidebar, Icon, Menu } from "semantic-ui-react";
 import { useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router";
 import routes from '../../pages/routes';
-
+import { useDispatch, useSelector } from "react-redux";
+import { IRootState } from "../../interfaces/redux/stateInterface";
+import AuthTokenStore from '../../redux/AuthToken';
 interface IProps {
     child: ReactNode
 };
@@ -11,6 +14,12 @@ interface IProps {
 const HamburgerMenu = (props: IProps) => {
 
     const [visible, setVisible] = useState<boolean>(false);
+
+    const dispatch = useDispatch();
+
+    const history = useHistory();
+
+    const token = useSelector((state: IRootState) => state.authToken.token);
 
     const matchHome = useRouteMatch({
         path: "/",
@@ -26,6 +35,12 @@ const HamburgerMenu = (props: IProps) => {
     };
 
     const handleToggle = (): void => setVisible(!visible);
+
+    const handleLogout = () => {
+        dispatch(AuthTokenStore.actions.setToken(""));
+        window.localStorage.removeItem("token");
+        history.push(routes.LOGIN)
+    }
 
     return (
         <React.Fragment>
@@ -49,16 +64,21 @@ const HamburgerMenu = (props: IProps) => {
                         <Icon name='home' />
                         Home
                     </Menu.Item>
-                    <Menu.Item
-                        name="LOGIN"
-                        // icon="building outline"
-                        active={!!matchLogin}
-                        as={Link}
-                        to={routes.LOGIN}
-                    >
-                        <Icon name='user outline' />
-                        Login
-                    </Menu.Item>
+                    {token ? (
+                        <Menu.Item onClick={handleLogout}>
+                            Logout
+                        </Menu.Item>
+                    ) : (
+                        <Menu.Item
+                            as={Link}
+                            name="LOGIN"
+                            to={routes.LOGIN}
+                            active={!!matchLogin}
+                        >
+                            <Icon name='user outline' />
+                            Login
+                        </Menu.Item>
+                    )}
                 </Sidebar>
                 <Sidebar.Pusher
                     dimmed={visible}

@@ -1,44 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import endpoints from '../../utils/endpoints';
-import {redirectUrl, responseType} from '../../config/basicConfig';
+import React, { useEffect } from 'react';
 import Page from '../Page';
+import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../interfaces/redux/stateInterface';
+import routes from '../routes';
+
 
 
 const HomePage = () => {
+    const history = useHistory();
 
-    const [token, setToken] = useState("")
-
+    const token =  useSelector((state: IRootState) => state.authToken.token);
     useEffect(() => {
-        const hash = window.location.hash
-        let token: any = window.localStorage.getItem("token")
-
-        if (!token && hash) {
-            console.log('inside');
-            token = hash && hash.substring(1).split("&").find(elem => elem.startsWith("access_token"))?.split('=')[1];
-
-            window.location.hash = ""
-            window.localStorage.setItem("token", token)
+        if(!token){
+            history.push(routes.LOGIN);
         }
-
-        setToken(token)
-
-    }, [])
-
-
-    const logout = () => {
-        setToken("")
-        window.localStorage.removeItem("token")
-    }
+    },[history, token]);
 
     return (
         <Page>
-            <div>
-            <h1>Spotify React</h1>
-                {!token ?
-                    <a href={`${endpoints.AUTH_ENDPOINT}?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${redirectUrl}&response_type=${responseType}`}>Login
-                        to Spotify</a>
-                    : <button onClick={logout}>Logout</button>}
-            </div>
+         
+         
         </Page>
        
     );
