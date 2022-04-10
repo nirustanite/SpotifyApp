@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import HomePage from './pages/HomePage';
 
 function App() {
+
   return (
-    <div>
-      <h1>hello</h1>
-    </div>
+    <Fragment>
+      <HomePage />
+    </Fragment>
   );
 }
 
