@@ -29,14 +29,33 @@ export interface  ISearchDataFailedAction {
     payload: any;
 }
 
+export interface IDataFromUrlRequestedAction {
+    type: typeof ActionTypes.GET_DATA_FROM_URL_REQUESTED;
+    data: string | null | undefined;
+}
+
+export interface IDataFromUrlSucceededAction {
+    type: typeof ActionTypes.GET_DATA_FROM_URL_SUCEEDED;
+    payload: any;
+}
+export interface IDataFromUrlFailedAction {
+    type: typeof ActionTypes.GET_DATA_FROM_URL_FAILED;
+    payload: any;
+}
+
 export type SearchDataActions =
   | ISearchDataRequestAction
   | ISearchDataSucceedAction
   | ISearchDataFailedAction
-
-
+  | IDataFromUrlRequestedAction
+  | IDataFromUrlSucceededAction
+  | IDataFromUrlFailedAction
 export interface ISearchDataAction extends Action {
     type: typeof ActionTypes.GET_SEARCH_DATA_REQUESTED;
-    data: string; 
-    token: string;
+    data: string;
+}
+
+export interface IDataFromUrlAction extends Action {
+    type: typeof ActionTypes.GET_DATA_FROM_URL_REQUESTED;
+    data: string | null | undefined;
 }
