@@ -16,7 +16,6 @@ const DisplayMenu = () => {
     const searchData = useSelector((state: IRootState) => state.searchData.searchData);
 
     const handleItemClick = (e: any, { name }: any) => {
-        console.log('name', name);
         setActiveItem(name)
     };
 

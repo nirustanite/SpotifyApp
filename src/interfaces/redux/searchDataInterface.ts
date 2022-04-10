@@ -7,10 +7,14 @@ export interface ISearchData{
     tracks?: any;
 }
 
+export interface IError{
+    status: number;
+    message: string;
+}
 export interface ISearchDataInitialState{
     searchData: ISearchData;
     loading: boolean;
-    error: string;
+    error: IError;
 }
 
 

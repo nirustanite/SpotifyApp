@@ -14,22 +14,35 @@ const LoginPage = () => {
     const dispatch = useDispatch();
 
     const tokenfromReduxState = useSelector((state: IRootState) => state.authToken.token);
-    
+
+    const getReturnedParamsFromSpotifyAuth = (hash: any) => {
+        const stringAfterHashtag = hash.substring(1);
+        const paramsInUrl = stringAfterHashtag.split("&");
+        const paramsSplitUp = paramsInUrl.reduce((accumulater: any, currentValue: any) => {
+            const [key, value] = currentValue.split("=");
+            accumulater[key] = value;
+            return accumulater;
+        }, {});
+
+        return paramsSplitUp;
+    };
+
     useEffect(() => {
-        const hash = window.location.hash
-        let token: any = window.localStorage.getItem("token")
 
-        if (!token && hash) {
-            token = hash && hash.substring(1).split("&").find(elem => elem.startsWith("access_token"))?.split('=')[1];
-            window.location.hash = ""
-            window.localStorage.setItem("token", token)
-        }
+        const { access_token, expires_in, token_type } =
+            getReturnedParamsFromSpotifyAuth(window.location.hash);
 
-        dispatch(AuthTokenStore.actions.setToken(token));
-        
+        localStorage.clear();
+
+        localStorage.setItem("accessToken", access_token);
+        localStorage.setItem("tokenType", token_type);
+        localStorage.setItem("expiresIn", expires_in);
+
+        dispatch(AuthTokenStore.actions.setToken(access_token));
+
     }, [dispatch]);
 
-   
+
 
     return (
         <Page>

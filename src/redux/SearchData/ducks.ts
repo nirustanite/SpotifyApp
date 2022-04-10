@@ -56,7 +56,10 @@ export const actions = {
 export const initialState: ISearchDataInitialState = {
     searchData: {},
     loading: false,
-    error: ""
+    error: {
+        status: 0,
+        message: ""
+    }
 };
 
 

@@ -7,6 +7,7 @@ const DisplayDetailsTrack = (props: ITracksProps) => {
 
     return (
         <Segment>
+            {props.data.items?.length !== 0 ? (
             <Table celled>
                 <Table.Header>
                     <Table.Row>
@@ -43,7 +44,9 @@ const DisplayDetailsTrack = (props: ITracksProps) => {
                         </Table.HeaderCell>
                     </Table.Row>
                 </Table.Footer>
-            </Table>
+            </Table>) :( 
+                <p> No Tracks found ...</p>
+            )}
         </Segment >
     );
 };

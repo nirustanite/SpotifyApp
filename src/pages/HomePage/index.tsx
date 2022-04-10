@@ -14,13 +14,17 @@ const HomePage = () => {
 
     const token = useSelector((state: IRootState) => state.authToken.token);
     const loading = useSelector((state: IRootState) => state.searchData.loading);
+    const error = useSelector((state: IRootState) => state.searchData.error);
     const searchData = useSelector((state: IRootState) => state.searchData.searchData);
 
     useEffect(() => {
         if (!token) {
             history.push(routes.LOGIN);
         }
-    }, [history, token]);
+        if(error?.status === 401){
+            history.push(routes.LOGIN);
+        }
+    }, [history, token, error]);
 
     return (
         <Page>
