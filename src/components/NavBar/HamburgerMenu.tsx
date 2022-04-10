@@ -38,6 +38,7 @@ const HamburgerMenu = (props: IProps) => {
                     vertical
                     width='thin'
                 >
+
                     <Menu.Item
                         name="HOME"
                         // icon="building outline"
@@ -45,7 +46,8 @@ const HamburgerMenu = (props: IProps) => {
                         as={Link}
                         to={routes.HOME}
                     >
-                        SpotifyApp
+                        <Icon name='home' />
+                        Home
                     </Menu.Item>
                     <Menu.Item
                         name="LOGIN"
@@ -54,6 +56,7 @@ const HamburgerMenu = (props: IProps) => {
                         as={Link}
                         to={routes.LOGIN}
                     >
+                        <Icon name='user outline' />
                         Login
                     </Menu.Item>
                 </Sidebar>
