@@ -17,7 +17,6 @@ const Pagination = (props: IProps) => {
     }
 
     const handleNext = () => {
-        console.log("inside");
         dispatch(SearchDataStore.actions.getDataFromUrl(props.next));
     }
 
